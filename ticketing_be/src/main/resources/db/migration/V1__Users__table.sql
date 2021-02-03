@@ -3,5 +3,7 @@ CREATE TABLE IF NOT EXISTS public.users(
     name varchar NOT NULL,
     surname varchar NOT NULL,
     username varchar NOT NULL,
-    password varchar NOT NULL
+    password varchar NOT NULL,
+    is_working bool default false,
+    is_admin bool default false
 )

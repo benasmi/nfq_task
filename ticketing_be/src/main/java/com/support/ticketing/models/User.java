@@ -18,6 +18,12 @@ public class User {
     private String username;
     private String password;
 
+    @Column(name="is_working")
+    private boolean isWorking;
+
+    @Column(name="is_admin")
+    private boolean isAdmin;
+
     public User(Long id, String name, String surname, String username, String password) {
         this.id = id;
         this.name = name;
