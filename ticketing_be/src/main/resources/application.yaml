@@ -11,3 +11,4 @@ spring:
   flyway:
     schemas: public
     baseline-on-migrate: true
+    enabled: true
