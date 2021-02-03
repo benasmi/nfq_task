@@ -2,6 +2,7 @@ package com.support.ticketing.services;
 
 import com.auth0.jwt.JWT;
 import com.support.ticketing.contracts.UserRequest;
+import com.support.ticketing.contracts.UserResponse;
 import com.support.ticketing.models.User;
 import com.support.ticketing.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,6 +67,10 @@ public class UserService {
         }
     }
 
+    public UserResponse getCurrentUserProfile(){
+        User user = getCurrentUser();
+        return UserResponse.fromUser(user);
+    }
 
     public User getCurrentUser(){
         String currentUsername = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
