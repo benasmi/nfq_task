@@ -2,16 +2,24 @@ package com.support.ticketing.services;
 
 import com.auth0.jwt.JWT;
 import com.support.ticketing.contracts.UserRequest;
+import com.support.ticketing.models.User;
 import com.support.ticketing.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.nio.file.attribute.UserPrincipal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @Service
@@ -39,7 +47,7 @@ public class UserService {
         Authentication auth = authenticate(userRequest.getUsername(), userRequest.getPassword());
 
         String token = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
+                .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(expirationTime)))
                 .sign(HMAC512(secretKey.getBytes()));
 
@@ -57,4 +65,16 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
+
+
+    public User getCurrentUser(){
+        String currentUsername = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByUsername(currentUsername);
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User was not found!");
+        }
+
+        return user;
+    }
+
 }
