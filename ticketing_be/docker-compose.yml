@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+    db:
+        image: postgres:12.4
+        container_name: nfq-db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: nfq2021
+        ports:
+            - '5432:5432'
+        volumes:
+            - ./postgres:/docker-entrypoint-initdb.d

@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    show-sql: true
+  application:
+    name: ticketing-system
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nfq2021
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+  flyway:
+    schemas: public
+    baseline-on-migrate: true
