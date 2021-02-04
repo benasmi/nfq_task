@@ -2,13 +2,14 @@ package com.support.ticketing.controllers;
 
 import com.support.ticketing.contracts.DashboardResponse;
 import com.support.ticketing.services.DashboardService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
-import java.security.Principal;
+import java.time.Duration;
 import java.util.List;
 
 @RequestMapping("/dashboard")
@@ -21,8 +22,13 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping("/")
-    public List<DashboardResponse> getDashboard(Principal principal){
-        return dashboardService.getCurrentDashboard();
+    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<List<DashboardResponse>> getResourceUsage(@CookieValue(name="jwt") String jwtToken) {
+        System.out.println(jwtToken);
+        List<DashboardResponse> dashboardResponses = dashboardService.getCurrentDashboard(jwtToken);
+        return Flux.interval(Duration.ofSeconds(1))
+                .map(it -> dashboardResponses);
+
     }
+
 }

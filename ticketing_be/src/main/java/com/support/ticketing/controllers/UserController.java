@@ -1,5 +1,6 @@
 package com.support.ticketing.controllers;
 
+import com.support.ticketing.contracts.JwtResponse;
 import com.support.ticketing.contracts.UserRequest;
 import com.support.ticketing.contracts.UserResponse;
 import com.support.ticketing.services.UserService;
@@ -18,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @PostMapping("/sign-up")
     public void signUp(@RequestBody UserRequest userRequest){
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -25,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserRequest userRequest){
-        return userService.loginUser(userRequest);
+    public JwtResponse login(@RequestBody UserRequest userRequest){
+        return new JwtResponse(userService.loginUser(userRequest));
     }
 
     @GetMapping("/profile")
