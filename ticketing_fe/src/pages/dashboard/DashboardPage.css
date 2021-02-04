@@ -1,0 +1,10 @@
+body{
+    background: #282c34;
+    color: aliceblue;
+    padding: 64px;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+}

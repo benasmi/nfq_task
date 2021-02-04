@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { getCookie } from '../../utils/cookieService';
-import ActiveReservationHeader from '../../components/ActiveReservationHeader';
+import ActiveReservationHeader, { IActiveReservationHeader } from '../../components/ActiveReservationHeader';
+import './DashboardPage.css';
+import ActiveQue from '../../components/ActiveQue';
+
+interface IDashboardData {
+  userId: number;
+  name: string;
+  surname: string;
+  activeReservation: string;
+  reservationsInQue: [string];
+}
 
 const DashboardPage: React.FC = () => {
   const [listening, setListening] = useState<boolean>(false);
+  const [dashboard, setDashboard] = useState<IDashboardData[]>([]);
+
   let eventSource: EventSource | undefined = undefined;
 
   useEffect(() => {
@@ -13,8 +25,12 @@ const DashboardPage: React.FC = () => {
 
       eventSource = new EventSource('http://localhost:8080/dashboard/stream', { withCredentials: true });
       eventSource.onmessage = event => {
-        console.log(event.data);
+        const data = JSON.parse(event.data) as IDashboardData[];
+        setDashboard(data);
+        console.log('Event data', event.data);
+        // console.log('Parsed data', data);
       };
+
       eventSource.onerror = err => {
         console.error('EventSource failed:', err);
         eventSource?.close();
@@ -28,9 +44,15 @@ const DashboardPage: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <ActiveReservationHeader specialistName='Petras' specialistSurname='Petraitis' activeReservation='EFFQ' />
-      <ActiveReservationHeader specialistName='Vardenis' specialistSurname='Pavardenis' activeReservation='EQKS' />
+    <div className='dashboard'>
+      {dashboard.map(value => {
+        const activeHeader: IActiveReservationHeader = {
+          specialistName: value.name,
+          specialistSurname: value.surname,
+          activeReservation: value.activeReservation,
+        };
+        return <ActiveQue key={value.activeReservation} activeHeader={activeHeader} que={value.reservationsInQue} />;
+      })}
     </div>
   );
 };
