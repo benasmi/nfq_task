@@ -24,10 +24,8 @@ public class DashboardController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<List<DashboardResponse>> getResourceUsage(@CookieValue(name="jwt") String jwtToken) {
-        System.out.println(jwtToken);
-        List<DashboardResponse> dashboardResponses = dashboardService.getCurrentDashboard(jwtToken);
-        return Flux.interval(Duration.ofSeconds(1))
-                .map(it -> dashboardResponses);
+        return Flux.interval(Duration.ofSeconds(5))
+                .map(it -> dashboardService.getCurrentDashboard(jwtToken));
 
     }
 
