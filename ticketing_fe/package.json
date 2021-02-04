@@ -11,6 +11,7 @@
     "@types/react": "^16.14.3",
     "@types/react-dom": "^16.9.10",
     "axios": "^0.21.1",
+    "event-source-polyfill": "^1.0.22",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

@@ -1,19 +1,22 @@
 import axios, { AxiosError, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getCookie } from '../utils/cookieService';
 
 /**
  * Formed axios request
  * @param options
- * @param contentType
+ * @param authorize
  */
-const request = async function (options: AxiosRequestConfig) {
-  // const token = await CookieService.getAccessToken([SCOPES.AUTH]);
-  const token = '123';
-  const header = {
+const request = async function (options: AxiosRequestConfig, authorize = true) {
+  const token = await getCookie('jwt');
+  const header: any = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
-    // Authorization: `Bearer ${token}`,
   };
+
+  if (authorize) {
+    header.Authorization = `Bearer ${token}`;
+  }
 
   const client = axios.create({
     baseURL: 'http://localhost:8080/',
@@ -43,34 +46,46 @@ const request = async function (options: AxiosRequestConfig) {
   return client(options).then(onSuccess).catch(onError);
 };
 
-const getRequest = function (path: string, requestParams = ''): AxiosPromise {
-  return request({
-    url: path + requestParams,
-    method: 'GET',
-  });
+const getRequest = function (path: string, requestParams = '', authorize = true): AxiosPromise {
+  return request(
+    {
+      url: path + requestParams,
+      method: 'GET',
+    },
+    authorize,
+  );
 };
 
-const postRequest = function (path: string, payload: string, requestParams = ''): AxiosPromise {
-  return request({
-    url: path + requestParams,
-    method: 'POST',
-    data: payload,
-  });
+const postRequest = function (path: string, payload: string, requestParams = '', authorize = true): AxiosPromise {
+  return request(
+    {
+      url: path + requestParams,
+      method: 'POST',
+      data: payload,
+    },
+    authorize,
+  );
 };
 
-const putRequest = function (path: string, payload: string, requestParams = ''): AxiosPromise {
-  return request({
-    url: path + requestParams,
-    method: 'PUT',
-    data: payload,
-  });
+const putRequest = function (path: string, payload: string, requestParams = '', authorize = true): AxiosPromise {
+  return request(
+    {
+      url: path + requestParams,
+      method: 'PUT',
+      data: payload,
+    },
+    authorize,
+  );
 };
 
-const deleteRequest = function (path: string, requestParams = ''): AxiosPromise {
-  return request({
-    url: path + requestParams,
-    method: 'DELETE',
-  });
+const deleteRequest = function (path: string, requestParams = '', authorize = true): AxiosPromise {
+  return request(
+    {
+      url: path + requestParams,
+      method: 'DELETE',
+    },
+    authorize,
+  );
 };
 
 const RequestType = {

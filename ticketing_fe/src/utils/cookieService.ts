@@ -25,6 +25,11 @@ export function getCookie(cname: string): string {
   return '';
 }
 
+export function isAuthenticated(): boolean {
+  const token = getCookie('jwt');
+  return token !== '';
+}
+
 export function deleteCookie(name: string): void {
   const date = new Date();
 
