@@ -19,6 +19,7 @@ import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -80,6 +81,10 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public List<User> getAvailableWorkers() {
+        return userRepository.findAllWorkingUsers();
     }
 
 }

@@ -9,6 +9,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String name);
 
-    @Query(value="select u from User u where u.isWorking=TRUE ")
+    @Query(value="select u from User u where u.isWorking=TRUE and u.isAdmin=FALSE ")
     List<User> findAllWorkingUsers();
 }
