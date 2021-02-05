@@ -1,0 +1,21 @@
+/*body{*/
+/*    background: #282c34;*/
+/*    color: aliceblue;*/
+/*    padding: 64px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*}*/
+
+.issueTicketBody{
+    display: flex;
+    flex-direction: column;
+}
+
+#specialist{
+    transition: transform .2s;
+}
+
+#specialist:hover{
+    transform: scale(1.1);
+}

@@ -1,0 +1,30 @@
+
+.mainScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticketBody {
+    font-size: xxx-large;
+    padding: 16px;
+    box-shadow: 1px 1px 5px black;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#date{
+    color: grey;
+    font-size: xx-large;
+}
+
+.line{
+    width: 100%;
+    background: black;
+    margin: 8px;
+    border-bottom: 1px dashed;
+}
+

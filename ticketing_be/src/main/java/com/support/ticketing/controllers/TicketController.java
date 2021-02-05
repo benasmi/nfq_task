@@ -18,9 +18,8 @@ public class TicketController {
     }
 
     @PostMapping("/")
-    public TicketResponse insertTicket(@RequestBody TicketRequest ticketRequest){
-        String reservationCode = ticketService.issueNewTicket(ticketRequest);
-        return new TicketResponse(reservationCode);
+    public TicketOverviewResponse insertTicket(@RequestBody TicketRequest ticketRequest){
+        return ticketService.issueNewTicket(ticketRequest);
     }
 
     @GetMapping("/{id}")

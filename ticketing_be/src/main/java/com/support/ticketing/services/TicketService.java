@@ -24,10 +24,11 @@ public class TicketService {
         this.userRepository = userRepository;
     }
 
-    public String issueNewTicket(TicketRequest ticketRequest){
+    public TicketOverviewResponse issueNewTicket(TicketRequest ticketRequest){
         String reservationCode = UUID.randomUUID().toString().substring(0,4);
         ticketRepository.save(TicketRequest.fromTicketRequest(ticketRequest, reservationCode));
-        return reservationCode;
+
+        return getTicketOverview(reservationCode);
     }
 
     private Ticket getTicketByReservation(String reservationCode){
