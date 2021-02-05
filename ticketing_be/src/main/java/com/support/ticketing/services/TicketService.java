@@ -2,6 +2,7 @@ package com.support.ticketing.services;
 
 import com.support.ticketing.contracts.TicketOverviewResponse;
 import com.support.ticketing.contracts.TicketRequest;
+import com.support.ticketing.contracts.TicketResponse;
 import com.support.ticketing.contracts.TicketStatusResponse;
 import com.support.ticketing.models.Ticket;
 import com.support.ticketing.models.User;
@@ -24,11 +25,14 @@ public class TicketService {
         this.userRepository = userRepository;
     }
 
-    public TicketOverviewResponse issueNewTicket(TicketRequest ticketRequest){
+    public TicketResponse issueNewTicket(TicketRequest ticketRequest){
         String reservationCode = UUID.randomUUID().toString().substring(0,4);
-        ticketRepository.save(TicketRequest.fromTicketRequest(ticketRequest, reservationCode));
+        String secretCode = UUID.randomUUID().toString();
 
-        return getTicketOverview(reservationCode);
+        ticketRepository.save(TicketRequest.fromTicketRequest(ticketRequest, reservationCode, secretCode));
+
+        TicketOverviewResponse ticketOverviewResponse = getTicketOverview(reservationCode);
+        return new TicketResponse(ticketOverviewResponse, secretCode);
     }
 
     private Ticket getTicketByReservation(String reservationCode){
@@ -41,10 +45,16 @@ public class TicketService {
 
     public int getQueNumber(String reservationCode){
         Ticket ticket = getTicketByReservation(reservationCode);
+        if(ticket.getIs_closed()){
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Ticket is closed");
+        }
         return ticketRepository.findTicketQue(ticket.getReservationCode(), ticket.getUserId());
     }
 
     public int getQueNumber(Ticket ticket){
+        if(ticket.getIs_closed()){
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Ticket is closed");
+        }
         return ticketRepository.findTicketQue(ticket.getReservationCode(), ticket.getUserId());
     }
 
@@ -65,5 +75,16 @@ public class TicketService {
         int que = getQueNumber(ticket);
 
         return TicketStatusResponse.fromTicketAndQue(ticket, que);
+    }
+
+    public void cancelTicket(String reservationCode, String secretCode) {
+        Ticket ticket = getTicketByReservation(reservationCode);
+        if(!ticket.getSecret().equals(secretCode)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only owner can cancel ticket");
+        }
+
+        ticket.setIs_active(false);
+        ticket.setIs_closed(true);
+        ticketRepository.save(ticket);
     }
 }

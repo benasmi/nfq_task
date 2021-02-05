@@ -26,16 +26,19 @@ public class Ticket {
     private Boolean is_active;
     private Boolean is_closed;
 
+    private String secret;
+
     @CreationTimestamp
     @Column(name="issued_at")
     private Timestamp issuedAt;
 
-    public Ticket(Long id, Long userId, String reservationCode, Boolean is_active, Boolean is_closed) {
+    public Ticket(Long id, Long userId, String reservationCode, Boolean is_active, Boolean is_closed, String secret) {
         this.id = id;
         this.userId = userId;
         this.reservationCode = reservationCode;
         this.is_active = is_active;
         this.is_closed = is_closed;
+        this.secret = secret;
     }
 
     public Ticket(){

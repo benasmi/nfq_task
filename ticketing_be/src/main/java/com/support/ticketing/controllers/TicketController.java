@@ -18,7 +18,7 @@ public class TicketController {
     }
 
     @PostMapping("/")
-    public TicketOverviewResponse insertTicket(@RequestBody TicketRequest ticketRequest){
+    public TicketResponse insertTicket(@RequestBody TicketRequest ticketRequest){
         return ticketService.issueNewTicket(ticketRequest);
     }
 
@@ -36,4 +36,11 @@ public class TicketController {
     public TicketStatusResponse getTicketStatus(@PathVariable(name="id") String reservationCode){
         return ticketService.getTicketStatus(reservationCode);
     }
+
+    @GetMapping("/{id}/cancel")
+    public void cancelTicket(@PathVariable(name="id") String reservationCode,
+                             @CookieValue(name="secretCode") String secretCode){
+        ticketService.cancelTicket(reservationCode, secretCode);
+    }
+
 }

@@ -1,0 +1,1 @@
+ALTER TABLE public.tickets ADD COLUMN secret varchar NOT NULL;

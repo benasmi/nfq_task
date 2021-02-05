@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 public class TicketStatusResponse {
-    private boolean isActive;
-    private boolean isClosed;
+    private boolean active;
+    private boolean close;
     private int que;
 
     public TicketStatusResponse(boolean isActive, boolean isClosed, int que) {
-        this.isActive = isActive;
-        this.isClosed = isClosed;
+        this.active = isActive;
+        this.close = isClosed;
         this.que = que;
     }
 

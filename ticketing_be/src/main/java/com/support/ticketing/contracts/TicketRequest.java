@@ -10,7 +10,7 @@ public class TicketRequest {
     @NotNull
     private Long userId;
 
-    public static Ticket fromTicketRequest(TicketRequest ticketRequest, String reservationCode){
-        return new Ticket(null, ticketRequest.userId, reservationCode, false, false);
+    public static Ticket fromTicketRequest(TicketRequest ticketRequest, String reservationCode, String secretCode){
+        return new Ticket(null, ticketRequest.userId, reservationCode, false, false, secretCode);
     }
 }
