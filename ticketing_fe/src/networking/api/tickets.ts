@@ -10,7 +10,14 @@ const createTicket = (ticketRequest: ITicketRequest): AxiosPromise<any> =>
 
 const getTicketOverview = (reservationCode: string): AxiosPromise<any> => RequestType.getRequest(`/tickets/${reservationCode}`);
 
+const getTicketStatus = (reservationCode: string): AxiosPromise<any> => RequestType.getRequest(`/tickets/${reservationCode}/status`);
+
+const cancelTicket = (reservationCode: string): AxiosPromise<any> =>
+  RequestType.getRequest(`/tickets/${reservationCode}/cancel`, '', false, true);
+
 export const Tickets = {
   createTicket,
   getTicketOverview,
+  getTicketStatus,
+  cancelTicket,
 };

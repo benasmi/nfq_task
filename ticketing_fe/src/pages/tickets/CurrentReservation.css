@@ -28,3 +28,19 @@
     border-bottom: 1px dashed;
 }
 
+
+/* Portrait */
+@media only screen
+and (min-device-width: 350px)
+and (max-device-width: 736px)
+and (orientation: portrait) {
+    .ticketBody{
+        font-size: xx-large;
+        width: 100%;
+    }
+
+    #date{
+        font-size: medium;
+    }
+
+}

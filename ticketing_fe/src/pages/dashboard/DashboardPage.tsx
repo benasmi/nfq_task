@@ -51,7 +51,7 @@ const DashboardPage: React.FC = () => {
           specialistSurname: value.surname,
           activeReservation: value.activeReservation,
         };
-        return <ActiveQue key={value.activeReservation} activeHeader={activeHeader} que={value.reservationsInQue} />;
+        return <ActiveQue key={`${value.name}@${value.surname}`} activeHeader={activeHeader} que={value.reservationsInQue} />;
       })}
     </div>
   );

@@ -1,11 +1,3 @@
-/*body{*/
-/*    background: #282c34;*/
-/*    color: aliceblue;*/
-/*    padding: 64px;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*}*/
 
 .issueTicketBody{
     display: flex;
@@ -18,4 +10,20 @@
 
 #specialist:hover{
     transform: scale(1.1);
+}
+
+/* Portrait */
+@media only screen
+and (min-device-width: 350px)
+and (max-device-width: 736px)
+and (orientation: portrait) {
+    .issueTicketBody{
+        font-size: xx-large;
+        width: 100%;
+    }
+
+    #date{
+        font-size: medium;
+    }
+
 }

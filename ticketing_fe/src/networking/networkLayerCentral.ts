@@ -46,43 +46,47 @@ const request = async function (options: AxiosRequestConfig, authorize = true) {
   return client(options).then(onSuccess).catch(onError);
 };
 
-const getRequest = function (path: string, requestParams = '', authorize = true): AxiosPromise {
+const getRequest = function (path: string, requestParams = '', authorize = true, withCredentials = false): AxiosPromise {
   return request(
     {
       url: path + requestParams,
       method: 'GET',
+      withCredentials: withCredentials,
     },
     authorize,
   );
 };
 
-const postRequest = function (path: string, payload: string, requestParams = '', authorize = true): AxiosPromise {
+const postRequest = function (path: string, payload: string, requestParams = '', authorize = true, withCredentials = false): AxiosPromise {
   return request(
     {
       url: path + requestParams,
       method: 'POST',
       data: payload,
+      withCredentials: withCredentials,
     },
     authorize,
   );
 };
 
-const putRequest = function (path: string, payload: string, requestParams = '', authorize = true): AxiosPromise {
+const putRequest = function (path: string, payload: string, requestParams = '', authorize = true, withCredentials = false): AxiosPromise {
   return request(
     {
       url: path + requestParams,
       method: 'PUT',
       data: payload,
+      withCredentials: withCredentials,
     },
     authorize,
   );
 };
 
-const deleteRequest = function (path: string, requestParams = '', authorize = true): AxiosPromise {
+const deleteRequest = function (path: string, requestParams = '', authorize = true, withCredentials = false): AxiosPromise {
   return request(
     {
       url: path + requestParams,
       method: 'DELETE',
+      withCredentials: withCredentials,
     },
     authorize,
   );

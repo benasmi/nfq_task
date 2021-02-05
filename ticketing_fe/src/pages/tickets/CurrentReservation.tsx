@@ -5,12 +5,14 @@ import moment from 'moment';
 
 interface IReservation {
   payload: IViableReservation;
+  onRefresh: () => void;
+  onCancel: () => void;
 }
 
 const CurrentReservation: React.FC<IReservation> = reservation => {
   function Ticket() {
     const { specialist, reservationCode, issuedAt, status } = reservation.payload;
-    const que = status.que - 1;
+    const que = calculateRealQue();
     return (
       <div className='ticketBody'>
         <div>
@@ -19,18 +21,26 @@ const CurrentReservation: React.FC<IReservation> = reservation => {
         <div id='date'>{moment(issuedAt).format('MMMM Do YYYY, h:mm:ss a')}</div>
         <div className='line' />
         <div style={{ color: que > 0 ? 'red' : '#4CAF50' }}>{reservationCode}</div>
-        <div>Que: {status.que - 1}</div>
+        <div>Que: {que}</div>
       </div>
     );
   }
 
-  console.log(reservation.payload);
+  function calculateRealQue(): number {
+    const { status } = reservation.payload;
+    return status.que == 1 && status.active ? 0 : status.que;
+  }
+
   return (
     <div className='mainScreen'>
       <Ticket />
       <div>
-        <button key={100}>Refresh</button>
-        <button key={1000}>Cancel</button>
+        <button key={100} onClick={reservation.onRefresh}>
+          Refresh
+        </button>
+        <button key={1000} onClick={reservation.onCancel}>
+          Cancel
+        </button>
       </div>
     </div>
   );
