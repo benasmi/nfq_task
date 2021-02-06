@@ -115,6 +115,15 @@ const IssueTicketPage: React.FC = () => {
     Tickets.getTicketStatus(reservationCode)
       .then(response => {
         const ticketStatus = response.data as ITicketStatus;
+
+        if (ticketStatus.close) {
+          deleteCookie('reservationCode');
+          deleteCookie('secretCode');
+          setCurrentReservation(null);
+          fetchAvailableSpecialists();
+          return;
+        }
+
         if (currentReservation) {
           setCurrentReservation({
             status: ticketStatus,
