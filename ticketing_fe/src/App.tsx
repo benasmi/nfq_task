@@ -5,7 +5,7 @@ import IssueTicketPage from './pages/tickets/IssueTicketPage';
 import LoginPage from './pages/LoginPage';
 import AuthenticatedRoute from './routes/AuthenticatedRoute';
 import { AuthContext } from './contexts/AuthContext';
-import SpecialistPage from './pages/SpecialistPage';
+import SpecialistPage from './pages/specialist/SpecialistPage';
 
 const App: React.FC = () => {
   const authContext = useContext(AuthContext);

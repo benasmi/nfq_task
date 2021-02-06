@@ -1,0 +1,37 @@
+
+.mainScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.specialistBody {
+    font-size: xxx-large;
+    padding: 16px;
+    box-shadow: 1px 1px 5px black;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#queEmpty{
+    color: grey;
+}
+
+/* Portrait */
+@media only screen
+and (min-device-width: 350px)
+and (max-device-width: 736px)
+and (orientation: portrait) {
+    .specialistBody{
+        font-size: xx-large;
+        width: 100%;
+    }
+
+    #date{
+        font-size: medium;
+    }
+
+}
