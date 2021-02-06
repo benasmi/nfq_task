@@ -5,6 +5,7 @@ import com.support.ticketing.contracts.TicketRequest;
 import com.support.ticketing.contracts.TicketResponse;
 import com.support.ticketing.contracts.TicketStatusResponse;
 import com.support.ticketing.services.TicketService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,5 +43,16 @@ public class TicketController {
                              @CookieValue(name="secretCode") String secretCode){
         ticketService.cancelTicket(reservationCode, secretCode);
     }
+
+    @GetMapping("/{id}/activate")
+    public void activateTicket(@PathVariable(name="id") String reservationCode){
+        ticketService.activateTicket(reservationCode);
+    }
+
+    @GetMapping("/{id}/close")
+    public void closeTicket(@PathVariable(name="id") String reservationCode){
+        ticketService.closeTicket(reservationCode);
+    }
+
 
 }

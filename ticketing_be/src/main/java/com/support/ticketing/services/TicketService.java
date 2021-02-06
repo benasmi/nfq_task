@@ -19,10 +19,12 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public TicketService(TicketRepository ticketRepository, UserRepository userRepository) {
+    public TicketService(TicketRepository ticketRepository, UserRepository userRepository, UserService userService) {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public TicketResponse issueNewTicket(TicketRequest ticketRequest){
@@ -46,14 +48,16 @@ public class TicketService {
     public int getQueNumber(String reservationCode){
         Ticket ticket = getTicketByReservation(reservationCode);
         if(ticket.getIs_closed()){
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Ticket is closed");
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket is closed");
+            return -1;
         }
         return ticketRepository.findTicketQue(ticket.getReservationCode(), ticket.getUserId());
     }
 
     public int getQueNumber(Ticket ticket){
         if(ticket.getIs_closed()){
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Ticket is closed");
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket is closed");
+            return -1;
         }
         return ticketRepository.findTicketQue(ticket.getReservationCode(), ticket.getUserId());
     }
@@ -86,5 +90,40 @@ public class TicketService {
         ticket.setIs_active(false);
         ticket.setIs_closed(true);
         ticketRepository.save(ticket);
+    }
+
+    public void activateTicket(String reservationCode) {
+        User user = userService.getCurrentUser();
+        Ticket ticket = getTicketByReservation(reservationCode);
+
+        if(!ticket.getUserId().equals(user.getId())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "This ticket is assigned to other worker");
+        }
+
+        if(ticket.getIs_closed()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This ticket was already processed and closed");
+        }
+
+        Ticket activeTicket = ticketRepository.findActiveTicketByUser(user.getId());
+        if(activeTicket != null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one ticket at the time can be opened");
+        }
+
+        ticket.setIs_active(true);
+        ticketRepository.save(ticket);
+    }
+
+    public void closeTicket(String reservationCode) {
+        User user = userService.getCurrentUser();
+        Ticket ticket = getTicketByReservation(reservationCode);
+
+        if(!ticket.getUserId().equals(user.getId())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "This ticket is assigned to other worker");
+        }
+
+        ticket.setIs_active(false);
+        ticket.setIs_closed(true);
+        ticketRepository.save(ticket);
+
     }
 }
