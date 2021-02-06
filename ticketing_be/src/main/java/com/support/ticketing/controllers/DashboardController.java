@@ -2,6 +2,7 @@ package com.support.ticketing.controllers;
 
 import com.support.ticketing.contracts.DashboardResponse;
 import com.support.ticketing.services.DashboardService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,5 +29,4 @@ public class DashboardController {
                 .map(it -> dashboardService.getCurrentDashboard(jwtToken));
 
     }
-
 }

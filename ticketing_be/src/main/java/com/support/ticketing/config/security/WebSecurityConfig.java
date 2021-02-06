@@ -1,6 +1,7 @@
 package com.support.ticketing.config.security;
 
 import com.support.ticketing.config.filters.JWTAuthorizationFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
 
+    @Value("${jwt.auth.bearer.header}")
+    private String authHeader;
+
+    @Value("${jwt.auth.bearer.token.prefix}")
+    private String tokenPrefix;
+
+    @Value("${jwt.auth.bearer.secret}")
+    private String secret;
+
     public WebSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsService) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
@@ -34,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/tickets/**/close").authenticated()
                 .antMatchers("/**").permitAll()
                 .and()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), secret, tokenPrefix, authHeader))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
@@ -61,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
+
 
 
 }

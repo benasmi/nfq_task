@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'com.auth0:java-jwt:3.4.0'
+//	implementation 'org.springframework.boot:spring-boot-gradle-plugin'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'

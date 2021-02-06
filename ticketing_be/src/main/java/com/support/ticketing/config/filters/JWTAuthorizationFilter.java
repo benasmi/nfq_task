@@ -2,17 +2,10 @@ package com.support.ticketing.config.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.support.ticketing.models.User;
-import com.support.ticketing.repositories.UserRepository;
-import com.support.ticketing.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,20 +15,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-@Component
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-//    @Value("${jwt.auth.bearer.header}")
-    private String authHeader="Authorization";
 
-//    @Value("${jwt.auth.bearer.token.prefix}")
-    private String tokenPrefix="Bearer ";
+    private final String secret;
+    private final String tokenPrefix;
+    private final String authHeader;
 
-//    @Value("${jwt.auth.bearer.secret}")
-    private String secret="SecretKeyToGenJWTs";
-
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, String secret, String tokenPrefix, String authHeader) {
         super(authManager);
+        this.secret = secret;
+        this.tokenPrefix = tokenPrefix;
+        this.authHeader = authHeader;
     }
 
     @Override
