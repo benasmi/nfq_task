@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Auth } from '../networking/api/auth';
 import { getCookie, setCookie } from '../utils/cookieService';
 import { AxiosError } from 'axios';
-import { ILoginPage } from '../pages/LoginPage';
+import { ILoginPage } from '../pages/login/LoginPage';
 
 interface IUserProfile {
   name: string;

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import IssueTicketPage from './pages/tickets/IssueTicketPage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/login/LoginPage';
 import AuthenticatedRoute from './routes/AuthenticatedRoute';
 import { AuthContext } from './contexts/AuthContext';
 import SpecialistPage from './pages/specialist/SpecialistPage';

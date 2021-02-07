@@ -1,0 +1,12 @@
+.loginDiv{
+    padding: 64px;
+    box-shadow: 1px 1px 5px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px;
+}
+
+#credentialField{
+    margin: 8px;
+}

@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { isAuthenticated } from '../utils/cookieService';
+import { AuthContext } from '../../contexts/AuthContext';
+import { isAuthenticated } from '../../utils/cookieService';
 import { Redirect } from 'react-router-dom';
+
+import './LoginPage.css';
 
 export interface ILoginPage {
   username: string;
@@ -31,17 +33,19 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div style={{ flexDirection: 'column', display: 'flex', padding: 32 }}>
-      {' '}
-      <label>
-        Username:
-        <input type='text' name='username' value={loginConfig.username} onChange={handleChange} />{' '}
-      </label>{' '}
-      <label>
-        Password:
-        <input type='password' name='password' value={loginConfig.password} onChange={handleChange} />{' '}
-      </label>
-      <input style={{ width: 100 }} type='submit' value='login' onClick={handleLogin} />
+    <div className='loginDiv'>
+      <input id='credentialField' type='text' name='username' placeholder='Username' value={loginConfig.username} onChange={handleChange} />{' '}
+      <input
+        id='credentialField'
+        type='password'
+        name='password'
+        placeholder='Password'
+        value={loginConfig.password}
+        onChange={handleChange}
+      />{' '}
+      <button type='submit' onClick={handleLogin}>
+        Login
+      </button>
     </div>
   );
 };

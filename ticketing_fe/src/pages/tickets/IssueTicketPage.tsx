@@ -41,17 +41,16 @@ const IssueTicketPage: React.FC = () => {
     loaderContext?.showLoader();
 
     const reservationCode = getCookie('reservationCode');
-    console.log('reservationCode', reservationCode);
 
     if (!reservationCode) {
       fetchAvailableSpecialists();
+      loaderContext?.hideLoader();
     } else {
       getTicketOverview(reservationCode);
     }
   }, []);
 
   function selectSpecialist(id: number): void {
-    console.log('Created ticket', id);
     createTicket(id);
   }
 
@@ -70,7 +69,6 @@ const IssueTicketPage: React.FC = () => {
       .then(response => {
         const data = response.data as IAvailableSpecialist[];
         setAvailableSpecialist(data);
-        loaderContext?.hideLoader();
       })
       .catch((err: AxiosError<Error>) => {
         console.log('error');
@@ -160,18 +158,26 @@ const IssueTicketPage: React.FC = () => {
     }
   }
 
-  return (
-    <div>
-      <div className='issueTicketBody'>
-        {currentReservation && !loaderContext?.loading ? (
-          <CurrentReservation onRefresh={onRefreshTicket} onCancel={onCancelTicket} payload={currentReservation} />
-        ) : (
-          <div>
-            <div>Open a ticket with one of the available specialists</div>
-            <AvailableSpecialists />
-          </div>
-        )}
+  function IssueTicketBody(): any {
+    if (loaderContext?.loading) {
+      return null;
+    }
+
+    if (currentReservation) {
+      return <CurrentReservation onRefresh={onRefreshTicket} onCancel={onCancelTicket} payload={currentReservation} />;
+    }
+
+    return (
+      <div>
+        <div>Open a ticket with one of the available specialists</div>
+        {availableSpecialist.length > 0 ? <AvailableSpecialists /> : '---'}
       </div>
+    );
+  }
+
+  return (
+    <div className='issueTicketBody'>
+      <IssueTicketBody />
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getCookie } from '../../utils/cookieService';
 import ActiveReservationHeader, { IActiveReservationHeader } from '../../components/ActiveReservationHeader';
 import './DashboardPage.css';
 import ActiveQue from '../../components/ActiveQue';
+import { LoaderContext } from '../../contexts/LoaderContext';
 
 interface IDashboardData {
   userId: number;
@@ -15,30 +16,35 @@ interface IDashboardData {
 const DashboardPage: React.FC = () => {
   const [listening, setListening] = useState<boolean>(false);
   const [dashboard, setDashboard] = useState<IDashboardData[]>([]);
-
+  const loaderContext = useContext(LoaderContext);
   let eventSource: EventSource | undefined = undefined;
 
   useEffect(() => {
     if (!listening) {
+      loaderContext?.showLoader();
       const token = getCookie('jwt');
       console.log('using token', token);
 
-      eventSource = new EventSource('http://localhost:8080/dashboard/stream', { withCredentials: true });
+      eventSource = new EventSource('http://http://176.223.134.114:8080/dashboard/stream', { withCredentials: true });
       eventSource.onmessage = event => {
         const data = JSON.parse(event.data) as IDashboardData[];
         setDashboard(data);
-        console.log('Event data', event.data);
-        // console.log('Parsed data', data);
+      };
+
+      eventSource.onopen = () => {
+        loaderContext?.hideLoader();
       };
 
       eventSource.onerror = err => {
         console.error('EventSource failed:', err);
         eventSource?.close();
+        loaderContext?.hideLoader();
       };
       setListening(true);
     }
     return () => {
       eventSource?.close();
+      loaderContext?.hideLoader();
       console.log('event closed');
     };
   }, []);

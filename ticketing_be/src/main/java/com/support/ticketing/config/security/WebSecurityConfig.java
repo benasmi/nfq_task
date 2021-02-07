@@ -40,8 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/worker/*").authenticated()
-//                .antMatchers("/tickets/**/activate").authenticated()
-//                .antMatchers("/tickets/**/close").authenticated()
+                .antMatchers("/tickets/**/activate").authenticated()
+                .antMatchers("/tickets/**/close").authenticated()
                 .antMatchers("/**").permitAll()
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), secret, tokenPrefix, authHeader))
@@ -66,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 registry
                         .addMapping("/**")
                         .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("http://176.223.134.114")
                         .allowedMethods("GET", "POST", "DELETE", "PUT")
                         .allowCredentials(true);
             }

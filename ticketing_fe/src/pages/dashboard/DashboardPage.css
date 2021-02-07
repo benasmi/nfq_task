@@ -1,5 +1,6 @@
 body{
     background: #282c34;
+    display: block;
     color: aliceblue;
     padding: 64px;
 }

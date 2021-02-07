@@ -18,8 +18,10 @@ const request = async function (options: AxiosRequestConfig, authorize = true) {
     header.Authorization = `Bearer ${token}`;
   }
 
+  // baseURL: 'http://localhost:8080/',
+
   const client = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: 'http://176.223.134.114:8080/',
     headers: header,
   });
 
